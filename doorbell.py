@@ -9,8 +9,8 @@ GPIO.setup(BUTTON, GPIO.IN)
 GPIO.setup(BUZZER, GPIO.OUT)
 
 GPIO.output(BUZZER, GPIO.LOW)
-buzzer = GPIO.PWM(BUZZER, 100)
-buzzer.start(50)
+buzzer = GPIO.PWM(BUZZER, 2000)
+buzzer.start(0)
 
 '''
 How melodies are transposed into code that is played on buzzer:
@@ -45,32 +45,42 @@ future two buzzer support might be added.
 #Note frequencies, starting with a C
 #speaker works good from 32hz to about 500hz, so the first four octaves here, fifth octave just for fun
 #in case you're not familiar with musical notation, the 'b' after some of these indicates a flat so 'db' is 'd-flat'
-c = [32, 65, 131, 262, 523]
-db= [34, 69, 139, 277, 554]
-d = [36, 73, 147, 294, 587]
-eb= [37, 78, 156, 311, 622]
-e = [41, 82, 165, 330, 659]
-f = [43, 87, 175, 349, 698]
-gb= [46, 92, 185, 370, 740]
-g = [49, 98, 196, 392, 784]
-ab= [52, 104, 208, 415, 831]
-a = [55, 110, 220, 440, 880]
-bb= [58, 117, 223, 466, 932]
-b = [61, 123, 246, 492, 984]
+c = [0, 32, 65, 131, 262, 523, 0]
+db= [0, 34, 69, 139, 277, 554, 0]
+d = [0, 36, 73, 147, 294, 587, 0]
+eb= [0, 37, 78, 156, 311, 622, 0]
+e = [0, 41, 82, 165, 330, 659, 0]
+f = [0, 43, 87, 175, 349, 698, 0]
+gb= [0, 46, 92, 185, 370, 740, 0]
+g = [0, 49, 98, 196, 392, 784, 0]
+ab= [0, 52, 104, 208, 415, 831, 0]
+a = [0, 55, 110, 220, 440, 880, 0]
+bb= [0, 58, 117, 223, 466, 932, 0]
+b = [0, 61, 123, 246, 492, 984, 0]
+s = 0
 
 #notes of two scales, feel free to add more
 cmajor = [c, d, e, f, g, a, b]
 aminor = [a, b, c, d, e, f, g]
 
+z = 4
+
+#Doorbell
+doorbell_notes = [a[z], a[z+1], a[z], s, e[z], e[z+1], e[z], s, c[z], c[z+1], c[z], s]
+doorbell_beats = [0.1, 0.25, 0.1, 0.25, 0.1, 0.25, 0.1, 0.25, 0.1, 0.25, 0.1, 1]
+
+doorbell2_notes = [a[1+z], s, e[1+z], s, g[1+z], s, c[1+z], s, c[1+z], s, g[1+z], s, a[1+z], s, e[1+z], s]
+doorbell2_beats = [0.5, 0.25, 0.5, 0.25, 0.5, 0.25, 1, 0.5, 0.5, 0.25, 0.5, 0.25, 0.5, 0.25, 1, 0.5]
+
 #Star Wars Theme -- Key of C
-starwars_notes = [c[1], g[1], f[1], e[1], d[1], c[2], g[1], f[1], e[1], d[1], c[2], g[1], 
-              f[1], e[1], f[1], d[1]]
+starwars_notes = [c[1+z], g[1+z], f[1+z], e[1+z], d[1+z], c[2+z], g[1+z], f[1+z], e[1+z], d[1+z], c[2+z], g[1+z], 
+              f[1+z], e[1+z], f[1+z], d[1+z]]
 starwars_beats = [4,4,1,1,1,4,4,1,1,1,4,4,1,1,1,4]
 
 #London Bridges --Key of C
-londonbridges_notes = [g[1], a[1], g[1], f[1], e[1], f[1], g[1], d[1], e[1], f[1],
-                   e[1], f[1], g[1], g[1], a[1], g[1], f[1], e[1], f[1], g[1],
-                   d[1], g[1], e[1], c[1]]
+londonbridges_notes = [g[1+z], a[1+z], g[1+z], f[1+z], e[1+z], f[1+z], g[1+z], d[1+z], e[1+z], f[1+z],
+                   e[1+z], f[1+z], g[1+z], g[1+z], a[1+z], g[1+z], f[1+z], e[1+z], f[1+z], g[1+z],
+                   d[1+z], g[1+z], e[1+z], c[1+z]]
 londonbridges_beats = [2, 0.5, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 2, 2, 0.5, 1, 1, 1, 1,
                    2, 2, 2, 1,1]
 
@@ -85,7 +95,7 @@ def playScale(scale, pause):
     for i in range(0, 5):
         for note in scale:
             buzzer.ChangeFrequency(note[i])
-            time.sleep(pause)
+            sleep(pause)
     buzzer.stop()
 
 #call the playScale function   
@@ -101,19 +111,30 @@ def playSong(songnotes, songbeats, tempo):
         
     This function plays the melody, simply by iterating through the list. 
     '''
-    buzzer.ChangeDutyCycle(50)
+    #buzzer.ChangeDutyCycle(50)
     for i in range(0, len(songnotes)):
-        buzzer.ChangeFrequency(songnotes[i])
-        time.sleep(songbeats[i]*tempo)
+	if songnotes[i] > 0:
+		buzzer.ChangeDutyCycle(50)
+        	buzzer.ChangeFrequency(songnotes[i])
+	else:
+		buzzer.ChangeDutyCycle(0)
+        sleep(songbeats[i]*tempo)
     buzzer.ChangeDutyCycle(0)
 
 try:
 	while True:
 		if GPIO.input(BUTTON):
 			print("Someone is ringing !!!")
-			playSong(starwars_notes, starwars_beats, 0.2)
-			playSong(londonbridges_notes, londonbridges_beats, 0.3)	
-			sleep(2)
+#			playSong(doorbell_notes,doorbell_beats,0.001)
+#			playSong(doorbell_notes,doorbell_beats,0.01)
+			playSong(doorbell_notes,doorbell_beats,0.2)
+#			sleep(0.5)
+#			playSong(doorbell2_notes,doorbell2_beats,0.5)
+			#sleep(0.5)
+			#playSong(starwars_notes, starwars_beats, 0.2)
+			#sleep(0.5)
+			#playSong(londonbridges_notes, londonbridges_beats, 0.3)
+			#sleep(0.5)
 			#play()
 			#GPIO.output(BUZZER, GPIO.HIGH)
 			#sleep(0.5)
