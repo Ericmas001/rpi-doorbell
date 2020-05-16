@@ -15,9 +15,9 @@ def buzz(noteFreq, duration):
     halveWaveTime = 1 / (noteFreq * 2 )
     waves = int(duration * noteFreq)
     for i in range(waves):
-       GPIO.output(BUZZER, True)
+       GPIO.output(BUZZER, GPIO.HIGH)
        sleep(halveWaveTime)
-       GPIO.output(BUZZER, False)
+       GPIO.output(BUZZER, GPIO.LOW)
        sleep(halveWaveTime)
 
 def play():
@@ -26,14 +26,16 @@ def play():
     duration=[0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,1,0.5,0.5,1,0.25,0.25,0.25,0.25,0.5,0.5,0.25,0.25,0.25,0.25,0.5,0.5,0.5,0.5,1,0.5,0.5,1]
     for n in notes:
         buzz(n, duration[t])
-        time.sleep(duration[t] *0.1)
-        t+=1	
-	
+        sleep(duration[t] *0.1)
+        t+=1
+
 try:
 	while True:
 		if GPIO.input(BUTTON):
 			print("Someone is ringing !!!")
-			play()
+			buzz(262,0.5)	
+			sleep(2)
+			#play()
 			#GPIO.output(BUZZER, GPIO.HIGH)
 			#sleep(0.5)
 			#GPIO.output(BUZZER, GPIO.LOW)
