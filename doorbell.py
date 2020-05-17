@@ -28,8 +28,8 @@ def play():
         sleep(duration[t] *0.1)
         t+=1
 
-#buzzer = GPIO.PWM(BUZZER, 2000)
-#buzzer.start(0)
+buzzer = GPIO.PWM(BUZZER, 8000)
+buzzer.start(0)
 
 '''
 How melodies are transposed into code that is played on buzzer:
@@ -106,7 +106,7 @@ londonbridges_beats = [2, 0.5, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 2, 2, 0.5, 1, 1, 1,
 def playScale(scale, pause):
     '''
     scale: scale name to be played
-    pause: pause between each notes played
+	    pause: pause between each notes played
     
     This function plays the given scale in every available octave
     I used this to test what was audible on the buzzer
@@ -144,18 +144,19 @@ try:
 	while True:
 		if GPIO.input(BUTTON):
 			print("Someone is ringing !!!")
-#			playSong(doorbell_notes,doorbell_beats,0.2)
-			#sleep(0.5)
-			#playSong(doorbell2_notes,doorbell2_beats,0.5)
-			#sleep(0.5)
+			playSong(doorbell_notes,doorbell_beats,0.2)
+			sleep(0.5)
+#			playSong(doorbell2_notes,doorbell2_beats,0.5)
+#			sleep(0.5)
 			#playSong(starwars_notes, starwars_beats, 0.2)
 			#sleep(0.5)
 			#playSong(londonbridges_notes, londonbridges_beats, 0.3)
 			#sleep(0.5)
-			play()
-			#GPIO.output(BUZZER, GPIO.HIGH)
+			#play()
+			#buzz(50000,1)
+			#GPIO.output(BUZZER, 0.1)
 			#sleep(0.5)
-			#GPIO.output(BUZZER, GPIO.LOW)
+			#GPIO.output(BUZZER, 0)
 			#sleep(1.5)
 		else:
 			sleep(0.01)
