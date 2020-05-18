@@ -91,6 +91,9 @@ doorbell_beats = [0.1, 0.25, 0.1, 0.25, 0.1, 0.25, 0.1, 0.25, 0.1, 0.25, 0.1, 1]
 doorbell2_notes = [a[1+z], s, e[1+z], s, g[1+z], s, c[1+z], s, c[1+z], s, g[1+z], s, a[1+z], s, e[1+z], s]
 doorbell2_beats = [0.5, 0.25, 0.5, 0.25, 0.5, 0.25, 1, 0.5, 0.5, 0.25, 0.5, 0.25, 0.5, 0.25, 1, 0.5]
 
+doorbell3_beats = [0.25, 0.25, 0.5, 0.25]
+doorbell3_notes = [a[4], s, a[3], s]
+
 #Star Wars Theme -- Key of C
 starwars_notes = [c[1+z], g[1+z], f[1+z], e[1+z], d[1+z], c[2+z], g[1+z], f[1+z], e[1+z], d[1+z], c[2+z], g[1+z], 
               f[1+z], e[1+z], f[1+z], d[1+z]]
@@ -144,10 +147,12 @@ try:
 	while True:
 		if GPIO.input(BUTTON):
 			print("Someone is ringing !!!")
-			playSong(doorbell_notes,doorbell_beats,0.2)
-			sleep(0.5)
+#			playSong(doorbell_notes,doorbell_beats,0.2)
+#			sleep(0.5)
 #			playSong(doorbell2_notes,doorbell2_beats,0.5)
 #			sleep(0.5)
+			playSong(doorbell3_notes,doorbell3_beats,0.2)
+			sleep(0.5)
 			#playSong(starwars_notes, starwars_beats, 0.2)
 			#sleep(0.5)
 			#playSong(londonbridges_notes, londonbridges_beats, 0.3)
